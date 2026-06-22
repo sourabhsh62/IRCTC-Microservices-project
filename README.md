@@ -864,4 +864,48 @@ Booking Service communicates with User Service using Axios and REST APIs.
 Booking Service no longer accesses users table directly.
 
 Concept:
+Database Per Service.
+
+## Train Service
+
+Extracted train module from monolith.
+
+Communication:
+
+Booking Service
+↓ REST
+Train Service
+
+Concept:
 Database Per Service
+
+
+## Circuit Breaker
+
+Added:
+
+Timeout
+Retry
+Circuit Breaker
+
+Libraries:
+
+axios-retry
+opossum
+
+Protects booking-service from failures in user-service.
+
+Q4 Open, Closed and Half-Open states?
+Closed
+
+Everything normal.
+
+Open
+
+Service unhealthy.
+
+No requests sent.
+
+Half Open
+
+Testing whether service has recovered.
