@@ -3,43 +3,60 @@ const swaggerUi = require("swagger-ui-express");
 
 const options = {
 
-    definition:{
+    definition: {
 
-        openapi:"3.0.0",
+        openapi: "3.0.0",
 
-        info:{
+        info: {
 
-            title:"IRCTC Booking Service API",
+            title: "IRCTC Booking Service API",
 
-            version:"1.0.0",
+            version: "1.0.0",
 
-            description:"Booking Service Documentation"
+            description: "Booking Service Documentation"
 
         },
 
-        servers:[
+        servers: [
 
             {
 
-                url:"http://localhost:3000"
+                url: "http://localhost:3000"
 
             }
 
-        ]
+        ],
+
+        components: {
+
+            securitySchemes: {
+
+                bearerAuth: {
+
+                    type: "http",
+
+                    scheme: "bearer",
+
+                    bearerFormat: "JWT"
+
+                }
+
+            }
+
+        }
 
     },
 
-    apis:["./src/routes/*.js"]
+    apis: ["./src/routes/*.js"]
 
 };
 
-const swaggerSpec=
-swaggerJsDoc(options);
+const swaggerSpec = swaggerJsDoc(options);
 
-module.exports={
+module.exports = {
 
-swaggerUi,
+    swaggerUi,
 
-swaggerSpec
+    swaggerSpec
 
 };
