@@ -1,5 +1,5 @@
 const userService = require("../services/user.service");
-
+const asyncHandler=require("../middlewares/asyncHandler")
 const signup = asyncHandler(async (req, res, next) => {
     const result = await userService.signup(req.body);
     return res.status(201).json(result);
