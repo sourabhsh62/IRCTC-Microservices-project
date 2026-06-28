@@ -11,9 +11,12 @@ require("./src/workers/email.worker");
 
 const userRoutes = require("./src/routes/user.routes");
 const trainRoutes=require("./src/routes/train.routes")
+const {swaggerUi,swaggerSpec}=require("./src/docs/swagger")
 const app = express();
 
 app.use(express.json());
+
+app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swaggerSpec))
 
 app.use(userRoutes);
 app.use(trainRoutes);

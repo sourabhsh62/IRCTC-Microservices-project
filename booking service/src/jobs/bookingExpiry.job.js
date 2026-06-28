@@ -1,5 +1,6 @@
 const cron=require("node-cron");
 const pool=require("../config/db");
+require('dotenv').config(); // Sabse upar add karein
 
 cron.schedule("* * * * *",async()=>{
         console.log("Checking expired bookings...");;
