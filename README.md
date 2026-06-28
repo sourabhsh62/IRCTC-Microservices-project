@@ -909,3 +909,163 @@ No requests sent.
 Half Open
 
 Testing whether service has recovered.
+
+
+## Service Discovery
+
+Replaced hardcoded service URLs with environment variables.
+
+USER_SERVICE_URL
+TRAIN_SERVICE_URL
+
+Supports Docker and Kubernetes service discovery.
+
+
+## Docker Compose
+
+Containerized microservices:
+
+- API Gateway
+- Booking Service
+- User Service
+- Train Service
+- Postgres
+- Redis
+
+Run:
+
+docker-compose up --build
+
+
+## Kubernetes Basics
+
+Dockerfile
+↓
+Docker Image
+↓
+Container
+↓
+Pod
+
+Kubernetes manages Pods, not individual containers.
+
+## Deployment
+
+Deployment manages Pods.
+
+Features:
+- Self Healing
+- Replica Management
+- Rolling Updates
+
+
+## Logging
+
+Added centralized logging using Winston.
+
+Benefits:
+
+- Structured logs
+- Log levels
+- Timestamp
+- Easier debugging
+
+
+## Logging Levels
+
+INFO
+
+Application events
+
+WARN
+
+Business warnings
+
+ERROR
+
+Application failures
+
+
+
+global error handler flow 
+
+Client
+
+↓
+
+Controller
+
+↓
+
+Service
+
+↓
+
+throw Error
+
+↓
+
+next(error)
+
+↓
+
+Global Error Middleware
+
+↓
+
+JSON Response
+
+## Global Error Handling
+
+Added centralized Express error middleware.
+
+Benefits:
+
+- Consistent API responses
+- Centralized logging
+- Cleaner controllers
+
+
+
+Request
+    │
+    ▼
+Controller (AsyncHandler)
+    │
+    ▼
+Service
+    │
+    ▼
+Error
+    │
+    ▼
+Global Error Middleware
+    │
+    ▼
+Logger
+    │
+    ▼
+Response
+
+
+
+## Request Validation
+
+Added Joi-based validation.
+
+Benefits:
+
+- Reject invalid requests early
+- Clean controllers
+- Better API security
+
+
+## API Validation
+
+Validated:
+
+- Request Body
+- Query Parameters
+- Route Parameters
+
+Implemented using a reusable Joi validation middleware.

@@ -2,12 +2,38 @@ version: '3.8'
 
 services:
 
-  app:
-    build: .
+  api-gateway:
+    build: ./api-gateway
     ports:
       - "3000:3000"
+
+  booking-service:
+    build: ./booking-service
+    ports:
+      - "3002:3002"
     depends_on:
       - postgres
+      - redis
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+
+  train-service:
+    build: ./train-service
+    ports:
+      - "3003:3003"
+    depends_on:
+      - postgres
+
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "3004:3004"
+    depends_on:
       - redis
 
   postgres:
@@ -16,7 +42,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: sourabh@6260
       POSTGRES_DB: irctc_db
-
     ports:
       - "5432:5432"
 

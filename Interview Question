@@ -1,0 +1,130 @@
+Q1 What is a Transport?
+Answer
+
+A transport defines where logs are stored or sent. 
+Common transports include the console, files, databases, and cloud logging services.
+
+Q2 Why timestamps?
+Answer
+
+Timestamps help identify exactly when an event occurred, making debugging and monitoring much easier in production.
+
+Q3 Why centralize logging?
+Answer
+
+Instead of scattering console.log() throughout the codebase, a centralized logger provides consistent formatting, log levels, and makes it easy to change logging behavior in one place.
+
+
+
+
+
+Q1 Difference between INFO and ERROR?
+Answer
+
+INFO logs record successful application events, while ERROR logs capture failures and exceptions that require attention.
+
+Q2 Why WARN instead of ERROR for Redis lock?
+Answer
+
+Failure to acquire a lock is an expected business scenario due to concurrent requests. It is not an application failure, so it should be logged as a warning rather than an error.
+
+Q3 Why not log everything as ERROR?
+Answer
+
+If every event is logged as an error, real production issues become difficult to identify because logs become noisy.
+
+
+
+
+Interview Questions
+Q1 Why Global Error Handler?
+Answer
+
+It centralizes error handling, removes duplicate try-catch logic, ensures consistent API responses, and improves maintainability.
+
+Q2 Why should error middleware be registered last?
+Answer
+
+Express executes middleware in order. The error handler must come after all routes so it can catch errors propagated from controllers.
+
+Q3 Difference between throw error and next(error)?
+Answer
+
+throw creates the error, while next(error) passes it to Express's centralized error-handling middleware.
+
+
+
+Interview Question
+Q. Why create a custom ApiError instead of using Error?
+Answer
+
+The default Error object only stores the error message. A custom ApiError allows us to include HTTP status codes and other metadata, making error handling consistent across the application.
+
+
+
+
+
+8. Interview Questions
+Q1. Why not use JavaScript Error?
+Answer
+
+JavaScript's default Error only stores the error message. It doesn't include HTTP status codes or API-specific information. A custom ApiError allows us to return the correct status code and maintain consistent API responses.
+
+Q2. Why extend Error?
+Answer
+
+By extending Error, we inherit all the default error behavior while adding our own properties like statusCode and success.
+
+Q3. Why Error.captureStackTrace()?
+Answer
+
+It records the exact location where the error occurred, making debugging easier in production.
+
+
+Interview Questions
+Q1 Why validate request before controller?
+Answer
+
+To reject invalid input as early as possible, preventing unnecessary business logic execution and database queries.
+
+Q2 Why create a separate validators folder?
+Answer
+
+It separates validation logic from business logic, making the code easier to maintain, test, and reuse.
+
+Q3 Why not validate in service?
+Answer
+
+Services should focus on business logic. Input validation is an API-layer concern and should happen before the request reaches the service.
+
+Why didn't you use the same validation middleware for GET APIs?
+
+Answer
+
+Because the current middleware validates only req.body. GET requests usually send data through req.query or req.params. We need a more flexible validation middleware that can validate body, query, and params separately.
+
+
+7. Interview Questions
+Q1
+
+Why did you make one middleware for body, query and params?
+
+Answer
+
+I wanted a reusable validation middleware. Instead of creating three separate middlewares, I used a dynamic property (req[property]) so the same middleware can validate body, query, or params.
+
+Q2
+
+Why validate query parameters?
+
+Answer
+
+Query parameters are user input just like the request body. Invalid query values can cause incorrect database queries or application errors, so they should be validated before reaching the controller.
+
+Q3
+
+Why validate route params?
+
+Answer
+
+Route parameters often contain IDs. Validating them ensures the application receives the correct data type before executing business logic.
