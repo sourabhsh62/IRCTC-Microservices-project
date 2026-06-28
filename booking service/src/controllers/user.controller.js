@@ -1,39 +1,28 @@
 const userService = require("../services/user.service");
 
-async function signup(req, res) {
-  try {
+const signup = asyncHandler(async (req, res, next) => {
     const result = await userService.signup(req.body);
-
     return res.status(201).json(result);
-  } catch (error) {
-    return res.status(400).json({
-      message: error.message
-    });
-  }
-}
+});
 
 
-async function Login(req,res){
-  try {
-    const result=await userService.Login(req.body);
+const Login = asyncHandler(async (req, res, next) => {
+    const result = await userService.Login(req.body);
     return res.status(200).json(result);
+});
 
-  } catch (error) {
-    return res.status(400).json({message:error.message})
-  }
-}
-
-async function profile(req,res){
-  return res.status(200).json({message:"profile fetched",user:req.user})
-}
+const profile = asyncHandler(async (req, res, next) => {
+    return res.status(200).json({ message: "profile fetched", user: req.user });
+});
 
 
-async function refreshToken(req,res){
-  const {refreshToken}=req.body;
-  const result=await userService.refreshAccessToken(refreshToken);
-  return res.status(200).json(result) //result k andr acccess token aa raha hai user.service se 
-}
 
+const refreshToken = asyncHandler(async (req, res, next) => {
+    const { refreshToken } = req.body;
+    const result = await userService.refreshAccessToken(refreshToken);
+    return res.status(200).json(result); // Sends the new access token back safely
+});
+ 
 module.exports = {
   signup,Login,profile,refreshToken
 };

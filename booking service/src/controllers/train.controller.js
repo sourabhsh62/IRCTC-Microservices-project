@@ -1,65 +1,50 @@
 const trainService = require("../services/train.service");
+const asyncHandler=require("../middlewares/asyncHandler")
 
-async function createTrain(req, res) {
-    try {
-        const result = await trainService.createTrain(req.body);
-        return res.status(201).json(result)
-    } catch (error) {
-        return res.status(400).json({ message: error.message })
-    }
-}
-
-async function getAllTrains(req, res) {
-    try {
-        const trains = await trainService.getAllTrains();
-        return res.status(200).json(trains);
-    } catch (error) {
-        return res.status(400).json({ message: error.message })
-    }
-}
-
-async function searchTrains(req, res) {
-    try {
-        const { source, destination } = req.query;
-        const result = await trainService.searchTrains(source, destination);
-        return res.status(200).json(result);
-    } catch (error) {
-      return res.status(400).json({message:error.message})
-    }
-
-}
-
-async function initializeInventory(req,res){
-    try {
-        const result=await trainService.initializeInventory(req.body)
-        return res.status(201).json(result)
-    } catch (error) {
-        return res.status(400).json({message:error.message});
-    }
-}
+const createTrain = asyncHandler(async (req, res, next) => {
+    const result = await trainService.createTrain(req.body);
+    return res.status(201).json(result);
+});
 
 
-async function bookTicket(req, res) { 
-  try { 
-    const result = await trainService.bookTicket(req.body); 
-    return res.status(201).json(result); 
-  } catch(error) { 
-    return res.status(400).json({ message: error.message }); 
-  } 
-}
+const getAllTrains = asyncHandler(async (req, res, next) => {
+    const trains = await trainService.getAllTrains();
+    return res.status(200).json(trains);
+});
 
 
-async function getMyBookings(req,res){
+const searchTrains = asyncHandler(async (req, res, next) => {
+    const { source, destination } = req.query;
+    const result = await trainService.searchTrains(source, destination);
+    return res.status(200).json(result);
+});
+
+const initializeInventory = asyncHandler(async (req, res, next) => {
+    const result = await trainService.initializeInventory(req.body);
+    return res.status(201).json(result);
+});
+
+
+
+const bookTicket=asyncHandler(async(req,res)=>{
+    const result=await trainService.bookTicket(req.body);
+    res.json(result);
+})
+
+
+
+
+async function getMyBookings(req,res,next){
     try {
         const result=await trainService.getMyBookings(req.params.userId);
         return res.status(200).json(result);
     } catch (error) {
-        return res.status(400).json({message:error.message})
+         next(error)
     }
 }
 
 
-async function cancelTicket(req,res){
+async function cancelTicket(req,res,next){
 
     try{
 
@@ -72,15 +57,13 @@ async function cancelTicket(req,res){
 
     }catch(error){
 
-        return res.status(400).json({
-            message:error.message
-        });
+         next(error)
 
     }
 
 }
 
-async function getAvailableSeats(req, res) {
+async function getAvailableSeats(req, res,next) {
   try {
     const { trainId, travelDate } = req.query;
 
@@ -89,9 +72,7 @@ async function getAvailableSeats(req, res) {
     return res.status(200).json(result);
     
   } catch (error) {
-    return res.status(400).json({
-      message:error.message
-    });
+     next(error)
   }
 }
 

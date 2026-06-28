@@ -4,6 +4,7 @@ const emailService =
     
     const emailQueue=require("../jobs/email.queue");
 const { sendPaymentSuccessEvent } = require("./kafka.producer"); 
+const logger = require('../utils/logger'); 
 async function pay(data) {
 
     const {
@@ -100,6 +101,9 @@ WHERE b.id=$1
             "COMMIT"
         );
 
+        logger.info(`Payment Successful | Booking:${bookingId}`); 
+
+
    await sendPaymentSuccessEvent({
     email:user.email,
     trainName:user.train_name,
@@ -179,6 +183,9 @@ async function paymentFail(data) {
         await client.query(
             "COMMIT"
         );
+
+                logger.error(`Payment Failed | Booking:${bookingId}`); 
+
 
         return {
             message:

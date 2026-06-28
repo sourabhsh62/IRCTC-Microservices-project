@@ -11,7 +11,7 @@ async function getUser(userId){
 
     const response=
     await axios.get(
-        `http://localhost:3001/users/${userId}`,
+        `${process.env.USER_SERVICE_URL}/users/${userId}`,
         {
             timeout:1000
         }
@@ -20,3 +20,21 @@ async function getUser(userId){
     return response.data;
 
 }
+
+const breaker=
+new CircuitBreaker(
+    getUser,
+    {
+        timeout:3000,
+        errorThresholdPercentage:50,
+        resetTimeout:5000
+    }
+);
+
+breaker.fallback(()=>{
+
+    throw new Error(
+        "User Service unavailable"
+    );
+
+});
