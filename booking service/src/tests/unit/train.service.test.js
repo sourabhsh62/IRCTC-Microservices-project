@@ -275,4 +275,44 @@ test(
 
     }
 );
+
+
+test(
+    "should throw error if train not found",
+    async () => {
+
+        acquireLock.mockResolvedValue(true);
+
+        userBreaker.fire.mockResolvedValue({
+            id: 1,
+            email: "test@gmail.com"
+        });
+
+        // Train Service returned null
+        axios.get.mockResolvedValue({
+            data: null
+        });
+
+        await expect(
+            bookTicket({
+                userId: 1,
+                trainId: 1,
+                travelDate: "2026-07-10",
+                seatNumber: 10
+            })
+        ).rejects.toThrow("Train not found");
+
+        expect(acquireLock).toHaveBeenCalled();
+
+        expect(userBreaker.fire).toHaveBeenCalledWith(1);
+
+        expect(axios.get).toHaveBeenCalled();
+
+        expect(pool.connect).not.toHaveBeenCalled();
+
+        expect(releaseLock).toHaveBeenCalled();
+
+    }
+);
+
     });
