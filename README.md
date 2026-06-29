@@ -1069,3 +1069,55 @@ Validated:
 - Route Parameters
 
 Implemented using a reusable Joi validation middleware.
+
+
+## Graceful Shutdown
+
+Implemented graceful shutdown for the Booking Service.
+
+Features:
+
+- Stops accepting new requests
+- Closes PostgreSQL connections
+- Closes Redis connection
+- Handles SIGINT and SIGTERM
+
+
+
+
+## Swagger Documentation
+
+Added Swagger UI for interactive API documentation.
+
+Benefits:
+
+- Interactive API testing
+- Easy frontend integration
+- Self-documented REST APIs
+
+
+
+## Swagger
+
+Configured Swagger UI using swagger-jsdoc.
+
+Access:
+
+http://localhost:3000/api-docs
+
+
+## Testing
+
+Configured Jest and Supertest.
+
+Current Setup:
+
+- Jest
+- Supertest
+
+Upcoming:
+
+- Unit Testing
+- Integration Testing
+- Mocking
+- Coverage

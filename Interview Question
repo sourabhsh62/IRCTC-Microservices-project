@@ -128,3 +128,259 @@ Why validate route params?
 Answer
 
 Route parameters often contain IDs. Validating them ensures the application receives the correct data type before executing business logic.
+
+
+
+
+8. Interview Questions
+Q1. Why use server.close() instead of process.exit() directly?
+
+Answer:
+
+server.close() stops accepting new requests but allows existing requests to complete. Calling process.exit() directly can terminate active requests abruptly and may lead to data inconsistency.
+
+Q2. Why handle both SIGINT and SIGTERM?
+
+Answer:
+
+SIGINT is typically triggered by pressing Ctrl + C during development, while SIGTERM is commonly sent by Docker, Kubernetes, or process managers during graceful shutdown in production.
+
+Q3. Why call pool.end()?
+
+Answer:
+
+It closes all PostgreSQL connections cleanly, preventing connection leaks and freeing database resources.
+
+Q4. Why call redisClient.quit()?
+
+Answer:
+
+It gracefully closes the Redis connection and ensures pending commands are handled before disconnecting.
+
+
+Interview Questions
+Q1
+
+Why Swagger?
+
+Answer
+
+Swagger provides interactive API documentation. Frontend developers and testers can understand and test APIs without reading backend code.
+
+Q2
+
+Why not write API documentation manually?
+
+Answer
+
+Manual documentation easily becomes outdated. Swagger keeps the documentation synchronized with the API implementation.
+
+
+
+
+Interview Questions
+Q1
+
+Swagger kya hai?
+
+Answer
+
+Swagger is an OpenAPI-based tool used to generate interactive API documentation.
+
+Q2
+
+Swagger UI kya karta hai?
+
+Answer
+
+Swagger UI provides a browser interface where developers can read API documentation and test endpoints.
+
+Q3
+
+Swagger JsDoc kya karta hai?
+
+Answer
+
+It scans JSDoc comments from route files and converts them into an OpenAPI specification.
+
+
+
+Interview Questions
+Q1
+
+Swagger comments routes me hi kyu likhte ho?
+
+Answer
+
+Because swagger-jsdoc scans route files directly and generates the OpenAPI specification automatically, keeping documentation close to the implementation.
+
+Q2
+
+Swagger aur Joi me same fields kyu?
+
+Answer
+
+Joi validates incoming requests at runtime, while Swagger documents the API contract. Keeping both aligned ensures the documentation accurately reflects the implemented API.
+
+Q3
+
+GET /trains me requestBody kyu nahi likha?
+
+Answer
+
+Because this endpoint does not accept a request body. It only returns data, so only response documentation is required.
+
+
+Interview Questions
+Q1
+
+GET API me requestBody kyu nahi use ki?
+
+Answer
+
+GET requests generally use query parameters instead of request bodies. Swagger documents them using parameters with in: query.
+
+Q2
+
+Difference between requestBody and query parameter?
+
+Answer
+
+requestBody is sent in the HTTP body, typically with POST/PUT requests. Query parameters are appended to the URL and are commonly used with GET requests.
+
+Q3
+
+Why document query parameters?
+
+Answer
+
+It clearly communicates the required inputs to API consumers and enables interactive testing through Swagger UI.
+
+
+
+Interview Questions
+Q1
+
+Why document requestBody?
+
+Answer
+
+It allows API consumers to understand the exact JSON payload required and enables interactive testing through Swagger UI.
+
+Q2
+
+Why should Swagger match Joi validation?
+
+Answer
+
+Swagger defines the API contract, while Joi enforces it. If they differ, the documentation becomes misleading and API consumers may send invalid requests.
+
+Q3
+
+Why include error responses like 404 and 409?
+
+Answer
+
+Clients need to know all possible outcomes of an API call so they can handle different scenarios correctly, such as validation failures, missing resources, or business conflicts.
+
+
+
+Interview Questions
+Q1
+
+Difference between
+
+in:path
+
+and
+
+in:query
+Answer
+
+in: path documents route parameters (e.g. /users/{id}), while in: query documents URL query parameters (e.g. /search?name=abc).
+
+Q2
+
+Why add BearerAuth in Swagger?
+
+Answer
+
+It enables authenticated API testing directly from Swagger UI without manually adding the Authorization header for every request.
+
+Q3
+
+Why document security in Swagger?
+
+Answer
+
+It clearly communicates which endpoints require authentication and improves developer experience for frontend and QA teams.
+
+
+
+
+Q1. Difference between defining securitySchemes and using security?
+
+Answer:
+
+securitySchemes defines how authentication works (JWT Bearer in our case).
+security on an endpoint specifies which endpoints require that authentication.
+Q2. Why not add JWT security to every API?
+
+Answer:
+
+Some APIs are intentionally public, such as searching trains or viewing available seats. Only operations that require an authenticated user should enforce JWT authentication.
+
+Q3. Why is Swagger Authorize useful?
+
+Answer:
+
+It allows developers and QA engineers to test protected APIs directly from Swagger UI without manually adding the Authorization header for every request.
+
+
+
+
+
+15. Interview Questions
+Q1
+
+Difference between Unit Testing and Integration Testing?
+
+Answer
+
+Unit Testing verifies an individual function in isolation by mocking its dependencies.
+
+Integration Testing verifies that multiple components (such as routes, controllers, services, and the database layer) work correctly together.
+
+Q2
+
+Why use Jest?
+
+Answer
+
+Jest provides assertions, mocking, snapshots, test runners, and coverage reporting in a single framework, making it the standard testing framework for Node.js applications.
+
+Q3
+
+Why install Jest as a devDependency?
+
+Answer
+
+Because Jest is only required during development and testing. It is not needed when running the application in production.
+
+
+Interview Questions
+Q1
+
+Why did we mock pool.connect() instead of pool.query()?
+
+Answer
+
+Because the bookTicket() service creates a database client using pool.connect() and performs all transaction queries (BEGIN, SELECT, INSERT, UPDATE, COMMIT) through client.query(). Mocking pool.query() would not intercept those calls.
+
+Q2
+
+Why is emit created with jest.fn()?
+
+Answer
+
+jest.fn() creates a mock function that records how it was called. This allows us to verify later that the service emitted the expected Socket.IO event.
