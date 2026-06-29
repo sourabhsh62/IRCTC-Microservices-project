@@ -439,3 +439,25 @@ Why verify emit()?
 Answer:
 
 Booking success should notify connected clients through Socket.IO. The test confirms that the service triggers this side effect.
+
+
+
+
+🎤 Interview Question
+Agar interviewer puche:
+
+"Tumne emit ko .not.toHaveBeenCalled() kyu likha?"
+
+Answer:
+
+"Because the booking operation failed before completion. Socket events should only be emitted after a successful booking. Verifying that no event is emitted prevents incorrect side effects."\\\
+
+
+Interview Question
+Agar interviewer bole
+
+"User validation fail hone ke baad DB connect kyu nahi hua?"
+
+Answer:
+
+Because the service follows the fail-fast principle. It validates the user before performing any database transaction, avoiding unnecessary resource usage.
