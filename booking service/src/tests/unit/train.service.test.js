@@ -315,4 +315,36 @@ test(
     }
 );
 
+
+
+test(
+    "should throw error if redis lock is not acquired",
+    async () => {
+
+        acquireLock.mockResolvedValue(false);
+
+        await expect(
+            bookTicket({
+                userId: 1,
+                trainId: 1,
+                travelDate: "2026-07-10",
+                seatNumber: 10
+            })
+        ).rejects.toThrow(
+            "Seat is currently being booked by another user"
+        );
+
+        expect(acquireLock).toHaveBeenCalled();
+
+        expect(userBreaker.fire).not.toHaveBeenCalled();
+
+        expect(axios.get).not.toHaveBeenCalled();
+
+        expect(pool.connect).not.toHaveBeenCalled();
+
+        expect(releaseLock).toHaveBeenCalled();
+
+    }
+);
+
     });

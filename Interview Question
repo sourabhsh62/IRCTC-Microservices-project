@@ -461,3 +461,29 @@ Agar interviewer bole
 Answer:
 
 Because the service follows the fail-fast principle. It validates the user before performing any database transaction, avoiding unnecessary resource usage.
+
+
+🎤 Interview Questions
+Q1
+
+Why didn't we connect to the database?
+
+Answer
+
+Because the service validates external dependencies first. If the train does not exist, there is no need to start a database transaction.
+
+Q2
+
+Why is releaseLock() still expected?
+
+Answer
+
+The lock is released in the finally block, ensuring cleanup even when an exception occurs.
+
+Q3
+
+Why mock axios.get() instead of the whole Train Service?
+
+Answer
+
+Because bookTicket() directly calls axios.get(). Unit tests should mock the dependency exactly where it is used.
