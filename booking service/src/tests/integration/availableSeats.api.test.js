@@ -60,4 +60,26 @@ describe("Available Seats API", () => {
 
     );
 
+    test(
+
+    "should return 400 when query parameters are missing",
+
+    async () => {
+
+        const response = await request(app)
+
+            .get("/available-seats");
+
+        expect(response.statusCode)
+
+            .toBe(400);
+
+        expect(trainService.getAvailableSeats)
+
+            .not.toHaveBeenCalled();
+
+    }
+
+);
+
 });

@@ -1286,4 +1286,24 @@ Covered Cases
 
 - ✅ Successful Seat Availability Fetch
 - ✅ Query Parameter Handling
-- ✅ Controller to Service Communication
+- ✅ Controller to Service Communicationgit
+
+
+### Available Seats Validation Tests
+
+Covered Cases
+
+- ✅ Missing trainId
+- ✅ Missing travelDate
+- ✅ Validation Middleware Tested
+- ✅ Controller Not Executed
+
+
+### Available Seats Validation Tests
+
+Covered Cases
+
+- ✅ Missing trainId
+- ✅ Missing travelDate
+- ✅ Validation Middleware Tested
+- ✅ Controller Not Executed

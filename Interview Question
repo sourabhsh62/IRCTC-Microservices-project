@@ -8819,3 +8819,19 @@ Why verify toHaveBeenCalledWith("1", "2026-07-10")?
 Answer
 
 Express parses query parameters as strings, so the controller receives "1" instead of 1. The test verifies the controller forwards the correct values.
+
+
+🎤 Interview Questions
+Q1
+Why validate query parameters?
+
+Answer
+
+Query parameters are user input just like request bodies. Validating them prevents invalid values from reaching the business logic and database.
+
+Q2
+Why verify that the service was not called?
+
+Answer
+
+It proves the validation middleware intercepted the request before the controller executed
