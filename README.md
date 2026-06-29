@@ -1212,3 +1212,27 @@ Upcoming
 - POST /book-ticket
 - POST /cancel-ticket
 - GET /available-seats
+
+
+### Integration Tests Completed
+
+#### POST /book-ticket
+
+Tests:
+
+- ✅ Returns HTTP 200 on successful booking
+- ✅ Verifies Controller → Service interaction
+- ✅ Uses Supertest for HTTP testing
+
+
+
+
+### Validation Tests
+
+Implemented validation testing for Booking APIs.
+
+Covered Cases:
+
+- ✅ Missing Required Fields
+- ✅ Validation Middleware Blocks Invalid Requests
+- ✅ Controller Is Not Executed On Validation Failure
