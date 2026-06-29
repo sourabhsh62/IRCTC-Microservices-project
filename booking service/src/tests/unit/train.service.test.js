@@ -6,21 +6,21 @@ const userBreaker = require("../../utils/userClient");
 
 const {
 
-acquireLock,
+    acquireLock,
 
-releaseLock
+    releaseLock
 
 } = require("../../utils/redisLock");
 
 const {
 
-getIO
+    getIO
 
 } = require("../../socket");
 
 const {
 
-bookTicket
+    bookTicket
 
 } = require("../../services/train.service");
 
@@ -38,25 +38,113 @@ jest.mock("../../socket");
 
 describe(
 
-"Book Ticket Service",
+    "Book Ticket Service",
 
-()=>{
+    () => {
 
-    beforeEach(()=>{
+        beforeEach(() => {
 
-        jest.clearAllMocks();
+            jest.clearAllMocks();
+
+        });
+
+        test(
+
+            "should book ticket successfully",
+
+            async () => {
+
+                acquireLock.mockResolvedValue(true);
+                userBreaker.fire.mockResolvedValue({
+
+                    id: 1,
+
+                    email: "test@gmail.com"
+
+                });
+                axios.get.mockResolvedValue({
+
+                    data: {
+
+                        id: 1,
+
+                        trainName: "Rajdhani"
+
+                    }
+
+                });
+                const emit = jest.fn();
+                getIO.mockReturnValue({
+
+                    emit
+
+                });
+                const client = {
+
+                    query: jest.fn(),
+
+                    release: jest.fn()
+
+                };
+                pool.connect.mockResolvedValue(
+
+                    client
+
+                );
+
+                client.query
+                    .mockResolvedValueOnce();
+                client.query.mockResolvedValueOnce({
+
+                    rows: [
+
+                        {
+
+                            status: "AVAILABLE"
+
+                        }
+
+                    ]
+
+                });
+
+                client.query
+                    .mockResolvedValueOnce();
+
+                client.query
+                    .mockResolvedValueOnce();
+
+                client.query
+                    .mockResolvedValueOnce();
+
+                 
+                    const result = await bookTicket({
+
+    userId:1,
+
+    trainId:1,
+
+    travelDate:"2026-07-10",
+
+    seatNumber:10
+
+});
+
+expect(result.message)
+
+.toBe(
+
+"Ticket booked successfully"
+
+);
+
+
+expect(acquireLock)
+
+.toHaveBeenCalled();
+
+
+            });
+
 
     });
-
-    test(
-
-"should book ticket successfully",
-
-async()=>{
-
-    acquireLock.mockResolvedValue(true);
-
-});
-
-
-});

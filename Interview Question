@@ -415,3 +415,27 @@ Why is the order of mocks important?
 Answer
 
 Jest consumes mockResolvedValueOnce() values sequentially. If the order does not match the actual database query sequence, the service receives incorrect data and the test fails.
+
+
+
+🎤 Interview Questions
+Q1
+Why verify client.query() call count?
+
+Answer:
+
+It ensures the service executed the expected database transaction flow (BEGIN, SELECT, INSERT, UPDATE, COMMIT). If a query is skipped or an extra query is added unintentionally, the test will fail.
+
+Q2
+Why verify releaseLock()?
+
+Answer:
+
+Locks must always be released, even if an error occurs. Verifying releaseLock() ensures the cleanup logic in the finally block is executed correctly.
+
+Q3
+Why verify emit()?
+
+Answer:
+
+Booking success should notify connected clients through Socket.IO. The test confirms that the service triggers this side effect.

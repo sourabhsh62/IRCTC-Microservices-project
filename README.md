@@ -1121,3 +1121,32 @@ Upcoming:
 - Integration Testing
 - Mocking
 - Coverage
+
+
+mocking database query for test order for bookticket function
+bookTicket()
+
+↓
+
+BEGIN
+(Mock-1)
+
+↓
+
+SELECT Seat
+(Mock-2)
+
+↓
+
+INSERT Booking
+(Mock-3)
+
+↓
+
+UPDATE Seat
+(Mock-4)
+
+↓
+
+COMMIT
+(Mock-5)
