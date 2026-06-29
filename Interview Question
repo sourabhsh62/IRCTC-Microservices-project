@@ -513,3 +513,21 @@ Why should Socket.IO not emit an event after a database failure?
 Answer:
 
 The booking operation was not completed successfully, so notifying clients would create inconsistent system state.
+
+
+Interview Questions
+Q1
+
+Why mock the service instead of the controller?
+
+Answer:
+
+The goal of an integration test is to verify the interaction between the route and the controller. Mocking the controller would bypass the application logic. Mocking the service isolates external dependencies while still testing the HTTP layer.
+
+Q2
+
+Why use Supertest?
+
+Answer:
+
+Supertest allows us to test Express APIs without starting a real HTTP server. It simulates HTTP requests directly against the Express application.
