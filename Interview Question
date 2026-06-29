@@ -8801,3 +8801,21 @@ Why does the controller not contain a try-catch block?
 Answer
 
 Because it is wrapped by asyncHandler, which automatically forwards rejected promises to Express error middleware.
+
+
+🎤 Interview Questions
+Q1
+
+Why use .query() instead of .send()?
+
+Answer
+
+GET requests do not have a request body. Query parameters are passed using .query(), which maps to req.query in Express.
+
+Q2
+
+Why verify toHaveBeenCalledWith("1", "2026-07-10")?
+
+Answer
+
+Express parses query parameters as strings, so the controller receives "1" instead of 1. The test verifies the controller forwards the correct values.

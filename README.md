@@ -1278,3 +1278,12 @@ Covered Cases
 - ✅ Internal Server Error
 - ✅ Error Middleware Tested
 - ✅ Service Failure Handling
+
+
+### Available Seats API Tests
+
+Covered Cases
+
+- ✅ Successful Seat Availability Fetch
+- ✅ Query Parameter Handling
+- ✅ Controller to Service Communication
