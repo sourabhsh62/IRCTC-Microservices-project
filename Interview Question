@@ -384,3 +384,34 @@ Why is emit created with jest.fn()?
 Answer
 
 jest.fn() creates a mock function that records how it was called. This allows us to verify later that the service emitted the expected Socket.IO event.
+
+
+
+
+Interview Questions
+Q1
+Why use mockResolvedValueOnce() instead of mockResolvedValue()?
+
+Answer
+
+Because client.query() is called multiple times with different purposes during a transaction. Each call needs a different mocked response to accurately simulate the execution flow.
+
+Q2
+Why did we return { rows: [{ status: "AVAILABLE" }] }?
+
+Answer
+
+The service checks:
+
+const seat = seatResult.rows[0];
+
+if (seat.status !== "AVAILABLE")
+
+So the mock must match the exact structure returned by PostgreSQL.
+
+Q3
+Why is the order of mocks important?
+
+Answer
+
+Jest consumes mockResolvedValueOnce() values sequentially. If the order does not match the actual database query sequence, the service receives incorrect data and the test fails.
