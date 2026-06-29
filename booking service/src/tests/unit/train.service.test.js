@@ -347,4 +347,75 @@ test(
     }
 );
 
+test(
+    "should rollback transaction if database insert fails",
+    async () => {
+
+        acquireLock.mockResolvedValue(true);
+
+        userBreaker.fire.mockResolvedValue({
+            id: 1,
+            email: "test@gmail.com"
+        });
+
+        axios.get.mockResolvedValue({
+            data: {
+                id: 1,
+                trainName: "Rajdhani"
+            }
+        });
+
+        const emit = jest.fn();
+
+        getIO.mockReturnValue({
+            emit
+        });
+
+        const client = {
+            query: jest.fn(),
+            release: jest.fn()
+        };
+
+        pool.connect.mockResolvedValue(client);
+
+        // BEGIN
+        client.query.mockResolvedValueOnce();
+
+        // SELECT Seat
+        client.query.mockResolvedValueOnce({
+            rows: [
+                {
+                    status: "AVAILABLE"
+                }
+            ]
+        });
+
+        // INSERT Booking -> ERROR
+        client.query.mockRejectedValueOnce(
+            new Error("Database Error")
+        );
+
+        // ROLLBACK
+        client.query.mockResolvedValueOnce();
+
+        await expect(
+            bookTicket({
+                userId: 1,
+                trainId: 1,
+                travelDate: "2026-07-10",
+                seatNumber: 10
+            })
+        ).rejects.toThrow("Database Error");
+
+        expect(client.query).toHaveBeenCalledTimes(4);
+
+        expect(releaseLock).toHaveBeenCalled();
+
+        expect(client.release).toHaveBeenCalled();
+
+        expect(emit).not.toHaveBeenCalled();
+
+    }
+);
+
     });

@@ -487,3 +487,29 @@ Why mock axios.get() instead of the whole Train Service?
 Answer
 
 Because bookTicket() directly calls axios.get(). Unit tests should mock the dependency exactly where it is used.
+
+
+🎤 Interview Questions
+Q1
+
+Why use mockRejectedValueOnce()?
+
+Answer:
+
+Because we want to simulate a database failure during a specific query. mockRejectedValueOnce() rejects only that invocation, allowing us to test error handling and rollback logic.
+
+Q2
+
+Why verify client.release()?
+
+Answer:
+
+Database connections are limited resources. Releasing the client in the finally block prevents connection leaks and keeps the connection pool healthy.
+
+Q3
+
+Why should Socket.IO not emit an event after a database failure?
+
+Answer:
+
+The booking operation was not completed successfully, so notifying clients would create inconsistent system state.
