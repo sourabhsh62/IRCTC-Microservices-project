@@ -8835,3 +8835,28 @@ Why verify that the service was not called?
 Answer
 
 It proves the validation middleware intercepted the request before the controller executed
+
+
+
+
+🎤 Interview Questions
+Q1
+Why use mockRejectedValue()?
+
+Answer
+
+It simulates asynchronous failures such as database exceptions, allowing us to verify error propagation through the controller and middleware.
+
+Q2
+Why is Error Middleware important?
+
+Answer
+
+It centralizes error handling and returns consistent HTTP responses instead of allowing the application to crash.
+
+Q3
+Why do we still verify getAvailableSeats() was called?
+
+Answer
+
+To ensure the controller correctly delegated the request to the service before the error occurred.

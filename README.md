@@ -1307,3 +1307,12 @@ Covered Cases
 - ✅ Missing travelDate
 - ✅ Validation Middleware Tested
 - ✅ Controller Not Executed
+
+
+### Available Seats Error Tests
+
+Covered Cases
+
+- ✅ Internal Server Error
+- ✅ Error Middleware Tested
+- ✅ Service Failure Handling

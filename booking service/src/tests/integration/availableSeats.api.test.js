@@ -81,5 +81,50 @@ describe("Available Seats API", () => {
     }
 
 );
+test(
+
+    "should return 500 when available seats service throws an error",
+
+    async () => {
+
+        trainService.getAvailableSeats.mockRejectedValue(
+
+            new Error("Database Error")
+
+        );
+
+        const response = await request(app)
+
+            .get("/available-seats")
+
+            .query({
+
+                trainId: 1,
+
+                travelDate: "2026-07-10"
+
+            });
+
+        expect(response.statusCode)
+
+            .toBe(500);
+
+        expect(response.body.message)
+
+            .toBe("Database Error");
+
+        expect(trainService.getAvailableSeats)
+
+            .toHaveBeenCalledWith(
+
+                "1",
+
+                "2026-07-10"
+
+            );
+
+    }
+
+);
 
 });
