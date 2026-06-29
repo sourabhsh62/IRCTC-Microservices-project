@@ -83,6 +83,7 @@ const myBookingSchema = Joi.object({
 
 });
 
+
 module.exports = {
     bookTicketSchema,createTrainSchema,initializeInventorySchema,cancelTicketSchema,searchTrainSchema,availableSeatsSchema,myBookingSchema
 };

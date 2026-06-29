@@ -39,4 +39,27 @@ describe("Cancel Ticket API", () => {
         }
     );
 
+    test(
+
+    "should return 400 when bookingId is missing",
+
+    async () => {
+
+        const response = await request(app)
+
+            .post("/cancel-ticket")
+
+            .send({});
+
+        expect(response.statusCode)
+
+            .toBe(400);
+
+        expect(trainService.cancelTicket)
+
+            .not.toHaveBeenCalled();
+
+    }
+
+);
 });

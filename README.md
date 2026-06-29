@@ -1250,3 +1250,22 @@ Covered Cases
 - ✅ Internal Server Error
 - ✅ Error Middleware Invocation
 - ✅ Service Failure Handling
+
+
+
+### Cancel Ticket API Tests
+
+Covered Cases
+
+- ✅ Successful Ticket Cancellation
+- ✅ Controller to Service Communication Verified
+
+
+### Cancel Ticket Validation Tests
+
+Covered Cases
+
+- ✅ Missing bookingId
+- ✅ Validation Middleware Tested
+- ✅ Controller Not Executed
+- ✅ Service Not Called
