@@ -12,50 +12,76 @@ describe("Book Ticket API", () => {
     });
 
     test(
-    "should return 200 when ticket booked successfully",
-    async () => {
+        "should return 200 when ticket booked successfully",
+        async () => {
 
-        trainService.bookTicket.mockResolvedValue({
-            message: "Ticket booked successfully"
-        });
-
-        const response = await request(app)
-            .post("/book-ticket")
-            .send({
-                userId: 1,
-                trainId: 1,
-                travelDate: "2026-07-10",
-                seatNumber: 10
+            trainService.bookTicket.mockResolvedValue({
+                message: "Ticket booked successfully"
             });
 
-        expect(response.statusCode).toBe(200);
+            const response = await request(app)
+                .post("/book-ticket")
+                .send({
+                    userId: 1,
+                    trainId: 1,
+                    travelDate: "2026-07-10",
+                    seatNumber: 10
+                });
 
-        expect(response.body.message)
-            .toBe("Ticket booked successfully");
+            expect(response.statusCode).toBe(200);
 
-        expect(trainService.bookTicket)
-            .toHaveBeenCalled();
+            expect(response.body.message)
+                .toBe("Ticket booked successfully");
 
-    }
-);
-test(
-    "should return 400 when required fields are missing",
-    async () => {
+            expect(trainService.bookTicket)
+                .toHaveBeenCalled();
 
-        const response = await request(app)
-            .post("/book-ticket")
-            .send({
-                userId: 1,
-                trainId: 1
-            });
+        }
+    );
+    test(
+        "should return 400 when required fields are missing",
+        async () => {
 
-        expect(response.statusCode).toBe(400);
+            const response = await request(app)
+                .post("/book-ticket")
+                .send({
+                    userId: 1,
+                    trainId: 1
+                });
 
-        expect(trainService.bookTicket)
-            .not.toHaveBeenCalled();
+            expect(response.statusCode).toBe(400);
 
-    }
-);
+            expect(trainService.bookTicket)
+                .not.toHaveBeenCalled();
 
+        }
+    );
+    test(
+        "should return 500 when service throws an error",
+        async () => {
+
+            trainService.bookTicket.mockRejectedValue(
+                new Error("Database Error")
+            );
+
+            const response = await request(app)
+                .post("/book-ticket")
+                .send({
+                    userId: 1,
+                    trainId: 1,
+                    travelDate: "2026-07-10",
+                    seatNumber: 10
+                });
+
+            expect(response.statusCode).toBe(500);
+
+            expect(response.body.message)
+                .toBe("Database Error");
+
+            expect(trainService.bookTicket)
+                .toHaveBeenCalled();
+
+        }
+    );
 
 });

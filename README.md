@@ -1227,6 +1227,9 @@ Tests:
 
 
 
+
+
+
 ### Validation Tests
 
 Implemented validation testing for Booking APIs.
@@ -1236,3 +1239,14 @@ Covered Cases:
 - ✅ Missing Required Fields
 - ✅ Validation Middleware Blocks Invalid Requests
 - ✅ Controller Is Not Executed On Validation Failure
+
+
+### Error Handling Tests
+
+Implemented error handling integration tests.
+
+Covered Cases
+
+- ✅ Internal Server Error
+- ✅ Error Middleware Invocation
+- ✅ Service Failure Handling
