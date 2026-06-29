@@ -1150,3 +1150,65 @@ UPDATE Seat
 
 COMMIT
 (Mock-5)
+
+## Testing
+
+### Testing Framework
+
+- Jest
+- Supertest
+
+### Unit Tests Implemented
+
+- ✅ Successful Ticket Booking
+- ✅ Seat Already Booked
+- ✅ User Not Found
+- ✅ Train Not Found
+- ✅ Redis Lock Failure
+- ✅ Database Rollback
+
+### Tested Components
+
+- Redis Lock
+- PostgreSQL Transactions
+- Socket.io Events
+- Axios Calls
+- Circuit Breaker
+- Database Connection Release
+
+### Commands
+
+Install Dependencies
+
+```bash
+npm install --save-dev jest supertest
+```
+
+Run Tests
+
+```bash
+npm test
+```
+
+### Current Coverage
+
+- bookTicket() Service
+
+
+
+
+## Integration Testing
+
+Started API Integration Testing using Supertest.
+
+Current Status
+
+- Express App Refactored
+- Supertest Configured
+- API Test Structure Created
+
+Upcoming
+
+- POST /book-ticket
+- POST /cancel-ticket
+- GET /available-seats

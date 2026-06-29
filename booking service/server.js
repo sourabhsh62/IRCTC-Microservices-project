@@ -1,60 +1,50 @@
-const http=require("http")
-const {initIO}=require("./src/socket");
-const logger=require("./src/utils/logger");
+const http = require("http");
+require("dotenv").config();
+
+const app = require("./src/app");
+
+const { initIO } = require("./src/socket");
+const logger = require("./src/utils/logger");
 const pool = require("./src/config/db");
 const redisClient = require("./src/config/redis");
 
-const express = require("express");
-require("dotenv").config();
+// Background Jobs
 require("./src/jobs/bookingExpiry.job");
 require("./src/workers/email.worker");
 
-const userRoutes = require("./src/routes/user.routes");
-const trainRoutes=require("./src/routes/train.routes")
-const {swaggerUi,swaggerSpec}=require("./src/docs/swagger")
-const app = express();
+const server = http.createServer(app);
 
-app.use(express.json());
-
-app.use("/api-docs",swaggerUi.serve,swaggerUi.setup(swaggerSpec))
-
-app.use(userRoutes);
-app.use(trainRoutes);
-const errorHandler=require("./src/middlewares/error.middleware")
-app.use(errorHandler)
-const server=http.createServer(app);
 initIO(server);
-server.listen(3000,()=>{
-  logger.info("Booking service  running on port 3000")
+
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, () => {
+    logger.info(`Booking Service Running On Port ${PORT}`);
 });
-async function gracefulShutdown(signal){
+
+// Graceful Shutdown
+async function gracefulShutdown(signal) {
 
     logger.info(`${signal} received`);
-
     logger.info("Closing HTTP Server...");
 
-    server.close(async()=>{
+    server.close(async () => {
 
-        try{
+        try {
 
             logger.info("Closing PostgreSQL Connection...");
-
             await pool.end();
-
             logger.info("PostgreSQL Closed");
 
             logger.info("Closing Redis Connection...");
-
             await redisClient.quit();
-
             logger.info("Redis Closed");
 
             logger.info("Booking Service Shutdown Successfully");
 
             process.exit(0);
 
-        }
-        catch(error){
+        } catch (error) {
 
             logger.error(error.message);
 
@@ -65,12 +55,7 @@ async function gracefulShutdown(signal){
     });
 
 }
-process.on(
-    "SIGINT",
-    () => gracefulShutdown("SIGINT")
-);
 
-process.on(
-    "SIGTERM",
-    () => gracefulShutdown("SIGTERM")
-);
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
