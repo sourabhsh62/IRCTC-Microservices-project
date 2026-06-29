@@ -1269,3 +1269,12 @@ Covered Cases
 - ✅ Validation Middleware Tested
 - ✅ Controller Not Executed
 - ✅ Service Not Called
+
+
+### Cancel Ticket Error Tests
+
+Covered Cases
+
+- ✅ Internal Server Error
+- ✅ Error Middleware Tested
+- ✅ Service Failure Handling

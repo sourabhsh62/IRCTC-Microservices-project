@@ -62,4 +62,31 @@ describe("Cancel Ticket API", () => {
     }
 
 );
+
+test(
+    "should return 500 when cancel ticket service fails",
+    async () => {
+
+        trainService.cancelTicket.mockRejectedValue(
+            new Error("Database Error")
+        );
+
+        const response = await request(app)
+            .post("/cancel-ticket")
+            .send({
+                bookingId: 1
+            });
+
+        expect(response.statusCode).toBe(500);
+
+        expect(response.body.message)
+            .toBe("Database Error");
+
+        expect(trainService.cancelTicket)
+            .toHaveBeenCalledWith({
+                bookingId: 1
+            });
+
+    }
+);
 });

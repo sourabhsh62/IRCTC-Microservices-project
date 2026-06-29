@@ -8724,3 +8724,80 @@ Why test validation separately?
 Answer
 
 Validation is the first layer of defense. If validation breaks, invalid data can reach the service layer and cause inconsistent application state.
+
+
+🎤 Interview Questions
+Q1
+
+Why use mockRejectedValue()?
+
+Answer
+
+It simulates an asynchronous service failure such as a database or external API error, allowing us to verify the application's error-handling flow.
+
+Q2
+
+Why test the Error Middleware?
+
+Answer
+
+Error middleware is responsible for returning consistent HTTP error responses. Testing it ensures that unexpected failures do not crash the application and are handled gracefully.
+
+
+🎤 Interview Questions
+Q1
+
+Why is trainService.cancelTicket mocked?
+
+Answer
+
+Because this is an integration test for the HTTP layer. The route and controller are tested while database logic is isolated.
+
+Q2
+
+Why use toHaveBeenCalledWith()?
+
+Answer
+
+It verifies that the controller forwards the correct request body to the service without modifying it.
+
+
+
+
+🎤 Interview Questions
+Q1
+Why should validation happen before the controller?
+
+Answer
+
+Validation prevents invalid input from reaching the business logic, reducing unnecessary processing and protecting the database.
+
+Q2
+Why verify that the service was not called?
+
+Answer
+
+It confirms that the validation middleware stopped the request before the controller executed, ensuring proper middleware behavior.
+
+
+🎤 Interview Questions
+Q1
+Why use mockRejectedValue()?
+
+Answer
+
+It simulates an asynchronous failure such as a database exception, allowing us to verify that the application's error handling works correctly.
+
+Q2
+Why test the Error Middleware?
+
+Answer
+
+Error middleware ensures all unexpected failures are converted into consistent HTTP responses instead of crashing the application.
+
+Q3
+Why does the controller not contain a try-catch block?
+
+Answer
+
+Because it is wrapped by asyncHandler, which automatically forwards rejected promises to Express error middleware.
