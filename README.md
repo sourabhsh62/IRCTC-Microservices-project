@@ -1500,3 +1500,17 @@ The API Gateway uses production-ready logging.
 ```
 logs/gateway.log
 ```
+
+
+## Testing
+
+Run
+
+```bash
+npm test
+```
+
+Testing Stack
+
+- Jest
+- Supertest
