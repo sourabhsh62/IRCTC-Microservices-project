@@ -1435,3 +1435,25 @@ Role Check
       ↓
 Proxy
 ```
+
+
+
+## Swagger Documentation
+
+Run
+
+```bash
+npm start
+```
+
+Open
+
+```
+http://localhost:3000/api-docs
+```
+
+Features
+
+- Interactive API Documentation
+- OpenAPI 3.0
+- Gateway Endpoint Documentation

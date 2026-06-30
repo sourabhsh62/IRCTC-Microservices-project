@@ -1,17 +1,43 @@
-const express = require("express");
+const express=require("express");
 
-const gatewayRoutes = require("./routes/gateway.routes");
+const helmet=require("helmet");
+
+const cors=require("cors");
+
 const {
 
-    swaggerUi,
+CLIENT_URL
 
-    swaggerSpec
+}=require("./config/constants");
 
-} = require("./docs/swagger");
+const {
 
-const app = express();
+swaggerUi,
+
+swaggerSpec
+
+}=require("./docs/swagger");
+
+const gatewayRoutes=require("./routes/gateway.routes");
+
+const app=express();
+
+app.use(helmet());
+
+app.use(
+
+cors({
+
+origin:CLIENT_URL,
+
+credentials:true
+
+})
+
+);
 
 app.use(express.json());
+
 app.use(
 
 "/api-docs",
@@ -24,4 +50,4 @@ swaggerUi.setup(swaggerSpec)
 
 app.use(gatewayRoutes);
 
-module.exports = app;
+module.exports=app;

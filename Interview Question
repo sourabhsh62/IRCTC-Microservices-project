@@ -8944,3 +8944,1452 @@ Why include role in JWT?
 Answer
 
 Embedding the user's role in the JWT allows the Gateway to make authorization decisions without querying the User Service for every request.
+
+
+
+🎤 Interview Questions
+Q1
+
+Why use Swagger in API Gateway?
+
+Answer
+
+The Gateway is the entry point for clients. Documenting Gateway APIs provides a single source of truth for all publicly exposed endpoints.
+
+Q2
+
+Why use annotations instead of manually writing JSON?
+
+Answer
+
+Swagger annotations keep documentation close to the route definitions, making it easier to maintain and reducing the risk of documentation becoming outdated.
+
+
+ye aa rha hai pgAdmin krne k baad 
+ye aa raha hai abhi 
+ye dekho sb thik hai na 
+const express = require("express");
+require("dotenv").config();
+
+const userRoutes = require("./src/routes/user.routes");
+const trainRoutes=require("./src/routes/train.routes")
+const app = express();
+
+app.use(express.json());
+
+app.use(userRoutes);
+app.use(trainRoutes);
+
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
+
+Perfect bhai. 🔥 Ab hum permanent flow follow karte hain.
+
+Main yaad rakh raha hu ki hum Production Ready IRCTC Microservices Project bana rahe hain.
+
+📌 Feature - 3
+API Gateway - JWT Authentication Middleware
+🎯 Hum Kya Bana Rahe Hai?
+
+Abhi koi bhi user directly Gateway hit kar sakta hai.
+
+Client
+   │
+   ▼
+Gateway
+   │
+   ▼
+Booking Service
+
+Ye secure nahi hai.
+
+Ab hum ye flow banayenge.
+
+Client
+
+↓
+
+Gateway
+
+↓
+
+JWT Verify
+
+↓
+
+Valid Token
+
+↓
+
+Booking Service
+
+↓
+
+Response
+
+Invalid Token
+
+↓
+
+401 Unauthorized
+
+❓ Kyu Bana Rahe Hai?
+
+Production me kabhi bhi
+
+POST /booking/book-ticket
+
+public nahi hota.
+
+Har request pehle
+
+JWT Verify
+
+karti hai.
+
+Isi liye Gateway me authentication hoti hai.
+
+📂 STEP-1
+Install Package
+Project
+api-gateway
+
+Run
+
+npm install jsonwebtoken dotenv
+📂 STEP-2
+File
+api-gateway/.env
+Exact Location
+
+Existing variables ke niche add karo.
+
+JWT_SECRET=your_jwt_secret
+📂 STEP-3
+New Folder
+src/middlewares
+New File
+src/middlewares/auth.middleware.js
+Paste
+const jwt = require("jsonwebtoken");
+
+const authMiddleware = (req, res, next) => {
+
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+
+        return res.status(401).json({
+
+            message: "Authorization header missing"
+
+        });
+
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+
+        return res.status(401).json({
+
+            message: "Token missing"
+
+        });
+
+    }
+
+    try {
+
+        const decoded = jwt.verify(
+
+            token,
+
+            process.env.JWT_SECRET
+
+        );
+
+        req.user = decoded;
+
+        next();
+
+    } catch (error) {
+
+        return res.status(401).json({
+
+            message: "Invalid Token"
+
+        });
+
+    }
+
+};
+
+module.exports = authMiddleware;
+🧠 Line By Line Explanation
+Step-1
+const authHeader=req.headers.authorization;
+
+Client bhejega
+
+Authorization
+
+Bearer eyJhbGci...
+Step-2
+split(" ")
+
+Bearer ko hata dega.
+
+Sirf JWT bachega.
+
+Step-3
+jwt.verify()
+
+Token verify karega.
+
+Step-4
+req.user
+
+User information
+
+controller tak pahunch jayegi.
+
+📂 STEP-4
+File
+src/routes/gateway.routes.js
+Exact Location
+
+Imports ke niche add karo.
+
+const authMiddleware =
+require("../middlewares/auth.middleware");
+Exact Location
+
+Abhi tumhare paas
+
+router.use(
+
+"/booking",
+
+createProxyMiddleware({
+
+target:BOOKING_SERVICE_URL,
+
+changeOrigin:true
+
+})
+
+);
+Replace With
+router.use(
+
+"/booking",
+
+authMiddleware,
+
+createProxyMiddleware({
+
+target:BOOKING_SERVICE_URL,
+
+changeOrigin:true
+
+})
+
+);
+Kyu?
+
+Ab
+
+Booking Service
+
+hit karne se pehle
+
+JWT verify hogi.
+
+Flow Diagram
+Client
+
+↓
+
+Gateway
+
+↓
+
+JWT Middleware
+
+↓
+
+Proxy
+
+↓
+
+Booking Service
+
+↓
+
+Response
+🎤 Interview Questions
+Q1
+
+Why verify JWT in API Gateway instead of every service?
+
+Answer
+
+Gateway acts as the single entry point. Verifying JWT once at the Gateway reduces duplicate authentication logic across multiple microservices.
+
+Q2
+
+Why store decoded user in req.user?
+
+Answer
+
+It allows downstream middleware and services to access authenticated user information without verifying the token again.
+
+📖 README Update
+File
+api-gateway/README.md
+Exact Location
+
+Features section ke niche add karo.
+
+## Authentication
+
+Gateway verifies JWT before forwarding requests.
+
+Flow
+
+```text
+Client
+    ↓
+Gateway
+    ↓
+JWT Verification
+    ↓
+Booking Service
+```
+
+Protected Routes
+
+- /booking/*
+💾 Git Commit
+git add .
+
+git commit -m "feat: add jwt authentication middleware to api gateway"
+📊 Project Progress
+API Gateway
+
+Architecture              ✅
+
+Folder Structure          ✅
+
+Environment Config        ✅
+
+Rate Limiter              ✅
+
+Proxy                     ✅
+
+JWT Authentication        ✅
+
+Swagger                   🔄 Next
+
+Helmet                    ⏳
+
+CORS                      ⏳
+
+Logging                   ⏳
+
+Integration Testing       ⏳
+
+Docker                    ⏳
+
+Kubernetes                ⏳
+⚠️ Tech Lead Review (Important Improvement)
+
+Bhai, yahan ek production-level issue hai jo hum agle feature me fix karenge.
+
+Abhi middleware sirf token verify kar raha hai:
+
+const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+Lekin User Service se verify nahi kar raha ki user abhi bhi valid hai ya nahi (for example, account delete ho gaya ho ya token revoke ho gaya ho).
+
+Production API Gateway me next improvement hoga:
+
+JWT Verify
+      ↓
+User Service Verification
+      ↓
+Role Check
+      ↓
+Proxy
+
+Isme hum role-based authorization (Admin/User) bhi add karenge. Ye feature interview aur production dono ke liye bahut valuable hai.
+
+ok age badho 
+
+Perfect bhai. 🔥 Ab hum Permanent Flow follow karte hain.
+
+Main yaad rakh raha hu ki hum Production Ready IRCTC Microservices Project bana rahe hain.
+
+📌 Feature - 4
+API Gateway - Role Based Authorization (RBAC)
+🎯 Hum Kya Bana Rahe Hai?
+
+Abhi humne JWT verify kar liya.
+
+Lekin abhi problem ye hai:
+
+Admin
+
+↓
+
+Booking API
+
+✅
+
+Aur
+
+Normal User
+
+↓
+
+Admin API
+
+✅
+
+(Ye galat hai)
+
+Ab hum ye banayenge:
+
+JWT Verify
+
+↓
+
+Role Check
+
+↓
+
+Admin
+
+↓
+
+Admin Routes
+
+↓
+
+Allowed
+JWT Verify
+
+↓
+
+Role Check
+
+↓
+
+User
+
+↓
+
+Admin Routes
+
+↓
+
+403 Forbidden
+❓ Kyu Bana Rahe Hai?
+
+Production me sirf login hona enough nahi hota.
+
+Har user ka
+
+Role
+Permission
+
+check hota hai.
+
+Yehi RBAC (Role Based Access Control) kehlata hai.
+
+📂 STEP-1
+File
+api-gateway/src/middlewares
+New File
+authorize.middleware.js
+Paste
+const authorize = (...roles) => {
+
+    return (req, res, next) => {
+
+        if (!req.user) {
+
+            return res.status(401).json({
+
+                message: "Unauthorized"
+
+            });
+
+        }
+
+        if (!roles.includes(req.user.role)) {
+
+            return res.status(403).json({
+
+                message: "Forbidden"
+
+            });
+
+        }
+
+        next();
+
+    };
+
+};
+
+module.exports = authorize;
+🧠 Kya Hua?
+
+Ye middleware check karega
+
+req.user.role
+
+Aur dekhega
+
+Allowed hai ya nahi.
+
+STEP-2
+File
+api-gateway/src/routes/gateway.routes.js
+Exact Location
+
+Imports ke niche add karo.
+
+const authorize =
+require("../middlewares/authorize.middleware");
+Exact Location
+
+Booking Route dhoondo.
+
+Abhi hoga
+
+router.use(
+
+"/booking",
+
+authMiddleware,
+
+createProxyMiddleware({
+
+target:BOOKING_SERVICE_URL,
+
+changeOrigin:true
+
+})
+
+);
+Replace With
+router.use(
+
+"/booking",
+
+authMiddleware,
+
+authorize(
+
+"USER",
+
+"ADMIN"
+
+),
+
+createProxyMiddleware({
+
+target:BOOKING_SERVICE_URL,
+
+changeOrigin:true
+
+})
+
+);
+Kyu?
+
+Ab
+
+USER
+
+↓
+
+Booking
+
+✅
+
+Aur
+
+ADMIN
+
+↓
+
+Booking
+
+✅
+
+Dono allowed hain.
+
+🧠 Important
+
+Lekin iske liye JWT me
+
+role
+
+hona chahiye.
+
+Mujhe yaad hai
+
+User Service me login time
+
+JWT aise ban raha tha.
+
+jwt.sign({
+
+id:user.id,
+
+email:user.email
+
+})
+
+Production ke liye isko change karna padega.
+
+📂 STEP-3
+File
+user-service/src/services/user.service.js
+Exact Location
+
+Login function me.
+
+Abhi hoga
+
+const accessToken = jwt.sign(
+
+{
+
+id:user.id,
+
+email:user.email
+
+},
+
+process.env.JWT_SECRET,
+
+{
+
+expiresIn:"15m"
+
+}
+
+);
+Replace With
+const accessToken = jwt.sign(
+
+{
+
+id:user.id,
+
+email:user.email,
+
+role:user.role
+
+},
+
+process.env.JWT_SECRET,
+
+{
+
+expiresIn:"15m"
+
+}
+
+);
+Refresh Token
+
+Usme bhi same.
+
+const refreshToken = jwt.sign(
+
+{
+
+id:user.id,
+
+email:user.email,
+
+role:user.role
+
+},
+
+process.env.JWT_SECRET,
+
+{
+
+expiresIn:"7d"
+
+}
+
+);
+🧠 Kyu?
+
+Gateway
+
+sirf JWT dekhega.
+
+Database call nahi karega.
+
+Isliye
+
+Role
+
+JWT me hona chahiye.
+
+Flow Diagram
+Client
+
+↓
+
+Gateway
+
+↓
+
+JWT Verify
+
+↓
+
+Role Check
+
+↓
+
+Proxy
+
+↓
+
+Booking Service
+🎤 Interview Questions
+Q1
+
+Why implement RBAC in API Gateway?
+
+Answer
+
+RBAC at the Gateway ensures unauthorized requests are rejected before reaching backend services, reducing duplicate authorization logic and improving security.
+
+Q2
+
+Why include role in JWT?
+
+Answer
+
+Embedding the user's role in the JWT allows the Gateway to make authorization decisions without querying the User Service for every request.
+
+📖 README Update
+File
+api-gateway/README.md
+Exact Location
+
+Authentication section ke niche add karo.
+
+## Authorization
+
+The API Gateway implements Role Based Access Control (RBAC).
+
+Supported Roles
+
+- ADMIN
+- USER
+
+Flow
+
+```text
+JWT Verify
+      ↓
+Role Check
+      ↓
+Proxy
+```
+💾 Git Commit
+git add .
+
+git commit -m "feat: implement role based authorization in api gateway"
+📊 Project Progress
+API Gateway
+
+Architecture              ✅
+Folder Structure          ✅
+Environment Config        ✅
+Rate Limiter              ✅
+Proxy                     ✅
+JWT Authentication        ✅
+Role Based Authorization  ✅
+
+Swagger                   🔄 Next
+Helmet                    ⏳
+CORS                      ⏳
+Logging                   ⏳
+Integration Testing       ⏳
+Docker                    ⏳
+Kubernetes                ⏳
+🔴 Tech Lead Review (Important)
+
+Yahan ek production issue hai jo abhi fix nahi karna chahiye.
+
+Abhi hum JWT se role read kar rahe hain:
+
+req.user.role
+
+Agar kisi user ka role database me change ho jaye (for example USER se ADMIN ya account disable ho jaye), to purana JWT expiry tak valid rahega.
+
+Production systems is problem ko solve karne ke liye token revocation, short-lived access tokens, refresh token rotation, ya User Service verification jaise approaches use karte hain.
+
+👉 Meri recommendation: Is project me pehle Swagger, Helmet, CORS, aur Integration Testing complete karte hain. Uske baad security hardening (token revocation, blacklist, etc.) add karenge. Isse project ka roadmap logical aur interview-friendly rahega.
+
+ok age badho
+
+Perfect bhai. 🔥 Ab hum Permanent Flow follow karte hain.
+
+Main yaad rakh raha hu:
+
+Project : Production Ready IRCTC Microservices
+
+Completed
+
+✅ User Service
+✅ Train Service
+✅ Booking Service
+🔄 API Gateway
+
+Current API Gateway Progress
+
+Architecture                 ✅
+Environment Config           ✅
+Rate Limiter                 ✅
+Proxy                        ✅
+JWT Authentication           ✅
+Role Based Authorization     ✅
+
+⬇️ NEXT
+
+Swagger Documentation
+📌 Feature - 5
+API Gateway Swagger Documentation
+🎯 Hum Kya Bana Rahe Hai?
+
+Abhi API Gateway chal raha hai.
+
+Lekin koi developer agar project clone kare to usko endpoints nahi pata.
+
+Isliye hum Swagger add karenge.
+
+Final Flow
+
+Browser
+
+↓
+
+http://localhost:3000/api-docs
+
+↓
+
+Swagger UI
+
+↓
+
+Gateway APIs
+❓ Kyu Bana Rahe Hai?
+
+Production me
+
+API
+
+↓
+
+Documentation
+
+hona mandatory hota hai.
+
+Interview me bhi poochte hain
+
+"How do you document REST APIs?"
+
+Answer
+
+Swagger/OpenAPI.
+
+STEP-1
+📂 Install Packages
+
+Project
+
+api-gateway
+
+Run
+
+npm install swagger-jsdoc swagger-ui-express
+STEP-2
+📂 Folder
+
+Already banaya tha
+
+src/docs
+New File
+src/docs/swagger.js
+Paste
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
+const options = {
+
+    definition: {
+
+        openapi: "3.0.0",
+
+        info: {
+
+            title: "IRCTC API Gateway",
+
+            version: "1.0.0",
+
+            description: "API Gateway Documentation"
+
+        },
+
+        servers: [
+
+            {
+
+                url: "http://localhost:3000"
+
+            }
+
+        ]
+
+    },
+
+    apis: [
+
+        "./src/routes/*.js"
+
+    ]
+
+};
+
+const swaggerSpec = swaggerJsDoc(options);
+
+module.exports = {
+
+    swaggerUi,
+
+    swaggerSpec
+
+};
+🧠 Kya Hua?
+
+Ye file
+
+Swagger configuration
+
+banayegi.
+
+Exactly
+
+Booking Service
+
+jaisa.
+
+STEP-3
+📂 File
+src/app.js
+Exact Location
+
+Imports ke niche
+
+Add karo
+
+const {
+
+    swaggerUi,
+
+    swaggerSpec
+
+} = require("./docs/swagger");
+Exact Location
+
+Ye line
+
+app.use(express.json());
+
+ke niche
+
+Paste
+
+app.use(
+
+"/api-docs",
+
+swaggerUi.serve,
+
+swaggerUi.setup(swaggerSpec)
+
+);
+Final app.js
+const express = require("express");
+
+const {
+
+swaggerUi,
+
+swaggerSpec
+
+}=require("./docs/swagger");
+
+const gatewayRoutes=
+require("./routes/gateway.routes");
+
+const app=express();
+
+app.use(express.json());
+
+app.use(
+
+"/api-docs",
+
+swaggerUi.serve,
+
+swaggerUi.setup(swaggerSpec)
+
+);
+
+app.use(gatewayRoutes);
+
+module.exports=app;
+STEP-4
+📂 File
+src/routes/gateway.routes.js
+Exact Location
+
+Sabse upar
+
+Paste
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: User Service Proxy
+ *     responses:
+ *       200:
+ *         description: Request forwarded to User Service
+ */
+
+Booking route ke upar
+
+Paste
+
+/**
+ * @swagger
+ * /booking:
+ *   get:
+ *     summary: Booking Service Proxy
+ *     responses:
+ *       200:
+ *         description: Request forwarded to Booking Service
+ */
+🧠 Kya Hua?
+
+Swagger
+
+Automatically
+
+Routes detect karega.
+
+Flow Diagram
+Browser
+
+↓
+
+/api-docs
+
+↓
+
+Swagger
+
+↓
+
+Gateway Routes
+
+↓
+
+Microservices
+🎤 Interview Questions
+Q1
+
+Why use Swagger in API Gateway?
+
+Answer
+
+The Gateway is the entry point for clients. Documenting Gateway APIs provides a single source of truth for all publicly exposed endpoints.
+
+Q2
+
+Why use annotations instead of manually writing JSON?
+
+Answer
+
+Swagger annotations keep documentation close to the route definitions, making it easier to maintain and reducing the risk of documentation becoming outdated.
+
+📖 README Update
+📂 File
+api-gateway/README.md
+Exact Location
+
+Features section ke niche
+
+Add
+
+## Swagger Documentation
+
+Run
+
+```bash
+npm start
+```
+
+Open
+
+```
+http://localhost:3000/api-docs
+```
+
+Features
+
+- Interactive API Documentation
+- OpenAPI 3.0
+- Gateway Endpoint Documentation
+💾 Git Commit
+git add .
+
+git commit -m "feat: add swagger documentation to api gateway"
+📊 Project Progress
+API Gateway
+
+Architecture              ✅
+Environment Config        ✅
+Rate Limiter              ✅
+Proxy                     ✅
+JWT Authentication        ✅
+Role Authorization        ✅
+Swagger                   ✅
+
+Helmet                    🔄 Next
+CORS                      ⏳
+Logging                   ⏳
+Integration Testing       ⏳
+Docker                    ⏳
+Kubernetes                ⏳
+🔴 Tech Lead Review (Important Improvement)
+
+Bhai, yahan ek production-level improvement hai.
+
+Abhi hum Swagger me sirf basic routes document kar rahe hain. Lekin Gateway me JWT authentication hai, isliye Swagger me Bearer Token authentication scheme bhi add honi chahiye taaki /booking jaise protected routes ko UI se test kiya ja sake.
+
+👉 Ye hum agle feature me karenge, saath hi Helmet aur CORS add karenge. Isse Gateway security aur developer experience dono production level ke ho jayenge.
+
+ok age badho ab 
+
+Perfect bhai. 🔥 Ab hum Permanent Flow ke hisab se hi chalenge.
+
+Main yaad rakh raha hu ki hum Production Ready IRCTC Microservices Project bana rahe hain.
+
+📌 Feature - 6
+API Gateway Security (Helmet + CORS)
+🎯 Hum Kya Bana Rahe Hai?
+
+Abhi Gateway me
+
+JWT ✅
+Rate Limiter ✅
+Proxy ✅
+
+hai.
+
+Lekin security headers nahi hain.
+
+Ab hum add karenge
+
+Client
+
+↓
+
+Gateway
+
+↓
+
+Helmet
+
+↓
+
+CORS
+
+↓
+
+JWT
+
+↓
+
+Proxy
+
+↓
+
+Microservices
+❓ Kyu Bana Rahe Hai?
+
+Production me
+
+Express application
+
+bina
+
+Helmet
+
+CORS
+
+ke deploy nahi ki jati.
+
+Ye OWASP security recommendations ka part hai.
+
+📂 STEP-1
+Install Packages
+
+Project
+
+api-gateway
+
+Run
+
+npm install helmet cors
+📂 STEP-2
+File
+api-gateway/.env
+Exact Location
+
+Existing variables ke niche add karo.
+
+CLIENT_URL=http://localhost:5173
+📂 STEP-3
+File
+api-gateway/src/config/constants.js
+Exact Location
+
+Current code
+
+module.exports={
+
+PORT,
+
+USER_SERVICE_URL,
+
+BOOKING_SERVICE_URL
+
+}
+Replace With
+module.exports = {
+
+    PORT: process.env.PORT || 3000,
+
+    USER_SERVICE_URL:
+        process.env.USER_SERVICE_URL,
+
+    BOOKING_SERVICE_URL:
+        process.env.BOOKING_SERVICE_URL,
+
+    CLIENT_URL:
+        process.env.CLIENT_URL
+
+};
+📂 STEP-4
+File
+api-gateway/src/app.js
+Exact Location
+
+Imports ke niche
+
+Paste
+
+const helmet = require("helmet");
+
+const cors = require("cors");
+
+const {
+
+CLIENT_URL
+
+}=require("./config/constants");
+Exact Location
+
+Ye line
+
+const app=express();
+
+ke niche
+
+Paste
+
+app.use(helmet());
+
+app.use(
+
+cors({
+
+origin:CLIENT_URL,
+
+credentials:true
+
+})
+
+);
+Final app.js
+const express=require("express");
+
+const helmet=require("helmet");
+
+const cors=require("cors");
+
+const {
+
+CLIENT_URL
+
+}=require("./config/constants");
+
+const {
+
+swaggerUi,
+
+swaggerSpec
+
+}=require("./docs/swagger");
+
+const gatewayRoutes=require("./routes/gateway.routes");
+
+const app=express();
+
+app.use(helmet());
+
+app.use(
+
+cors({
+
+origin:CLIENT_URL,
+
+credentials:true
+
+})
+
+);
+
+app.use(express.json());
+
+app.use(
+
+"/api-docs",
+
+swaggerUi.serve,
+
+swaggerUi.setup(swaggerSpec)
+
+);
+
+app.use(gatewayRoutes);
+
+module.exports=app;
+🧠 Line By Line Explanation
+Helmet
+app.use(helmet());
+
+Automatically
+
+Security Headers
+
+add karega.
+
+Jaise
+
+X-Frame-Options
+
+X-Content-Type-Options
+
+Content-Security-Policy
+CORS
+origin:CLIENT_URL
+
+Sirf
+
+http://localhost:5173
+
+ko allow karega.
+
+Koi dusra frontend
+
+request nahi bhej payega.
+
+credentials:true
+
+Cookies
+
+Authorization
+
+Headers
+
+allow karega.
+
+Flow Diagram
+Browser
+
+↓
+
+CORS
+
+↓
+
+Helmet
+
+↓
+
+JWT
+
+↓
+
+Rate Limiter
+
+↓
+
+Proxy
+
+↓
+
+Microservices
+🎤 Interview Questions
+Q1
+Why use Helmet?
+
+Answer
+
+Helmet sets secure HTTP headers that protect against common web vulnerabilities such as clickjacking, MIME sniffing, and some cross-site scripting attacks.
+
+Q2
+Why configure CORS instead of allowing "*"?
+
+Answer
+
+Allowing all origins exposes the API to unnecessary risk. Restricting requests to trusted frontend domains improves security.
+
+Q3
+Why enable credentials: true?
+
+Answer
+
+It allows browsers to send cookies and authenticated requests (such as Authorization headers) when communicating with trusted origins.
