@@ -1369,3 +1369,24 @@ Benefits
 - Easy Deployment
 - Docker Friendly
 - Kubernetes Friendly
+
+
+## Authentication
+
+Gateway verifies JWT before forwarding requests.
+
+Flow
+
+```text
+Client
+    ↓
+Gateway
+    ↓
+JWT Verification
+    ↓
+Booking Service
+```
+
+Protected Routes
+
+- /booking/*

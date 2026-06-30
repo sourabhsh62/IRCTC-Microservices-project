@@ -8909,3 +8909,21 @@ Why create a constants.js file?
 Answer
 
 It centralizes application configuration, avoids repeated process.env usage throughout the project, and provides a single place to manage runtime settings.
+
+
+🎤 Interview Questions
+Q1
+
+Why verify JWT in API Gateway instead of every service?
+
+Answer
+
+Gateway acts as the single entry point. Verifying JWT once at the Gateway reduces duplicate authentication logic across multiple microservices.
+
+Q2
+
+Why store decoded user in req.user?
+
+Answer
+
+It allows downstream middleware and services to access authenticated user information without verifying the token again.

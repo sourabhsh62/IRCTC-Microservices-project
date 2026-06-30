@@ -20,6 +20,8 @@ const {
     BOOKING_SERVICE_URL
 
 } = require("../config/constants");
+const authMiddleware =
+require("../middlewares/auth.middleware");
 
 const limiter = rateLimit({
 
@@ -61,7 +63,7 @@ changeOrigin:true
 
 router.use(
 
-"/booking",
+"/booking",authMiddleware,
 
 createProxyMiddleware({
 
