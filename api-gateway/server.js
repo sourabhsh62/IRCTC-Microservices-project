@@ -1,37 +1,19 @@
-const express = require("express");
-const {createProxyMiddleware}=require("http-proxy-middleware")
-const app=express();
-const rateLimit=
-require("express-rate-limit");
+require("dotenv").config();
 
-const RedisStore=
-require("rate-limit-redis");
+const app = require("./src/app");
 
-const redisClient=
-require("./src/config/redis");
-const limiter = rateLimit({
+const http = require("http");
 
-    windowMs:60*1000,
+const server = http.createServer(app);
 
-    max:10,
+const PORT = process.env.PORT || 3000;
 
-    message:"Too many requests",
+server.listen(PORT,()=>{
 
-    standardHeaders:true,
+console.log(
 
-    legacyHeaders:false,
+`API Gateway Running On Port ${PORT}`
 
-    store:new RedisStore({
-
-        sendCommand:(...args)=>
-        redisClient.sendCommand(args)
-
-    })
+);
 
 });
-app.use(limiter);
-app.use("/users",createProxyMiddleware({target:"http://localhost:3001",changeOrigin:true}));
-app.use("/booking",createProxyMiddleware({target:"http://localhost:3002",changeOrigin:true}));
-app.listen(3000,()=>{
-    console.log("API Gateway Running on 3000")
-})

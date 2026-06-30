@@ -1316,3 +1316,35 @@ Covered Cases
 - ✅ Internal Server Error
 - ✅ Error Middleware Tested
 - ✅ Service Failure Handling
+
+
+
+# API Gateway
+
+## Architecture
+
+```
+server.js
+      │
+      ▼
+src/app.js
+      │
+      ▼
+Gateway Routes
+      │
+      ▼
+Rate Limiter
+      │
+      ▼
+Proxy Middleware
+      │
+      ▼
+Microservices
+```
+
+### Features
+
+- Express
+- Proxy Middleware
+- Redis Rate Limiting
+- Production Ready Folder Structure

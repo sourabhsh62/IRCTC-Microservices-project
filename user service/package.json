@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "sourabh",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
@@ -18,9 +18,5 @@
     "jsonwebtoken": "^9.0.3",
     "morgan": "^1.11.0",
     "pg": "^8.22.0"
-  },
-  "devDependencies": {
-    "jest": "^30.4.2",
-    "supertest": "^7.2.2"
   }
 }

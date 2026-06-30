@@ -8860,3 +8860,33 @@ Why do we still verify getAvailableSeats() was called?
 Answer
 
 To ensure the controller correctly delegated the request to the service before the error occurred.
+
+
+🎤 Interview Questions
+Why separate app.js and server.js?
+
+Answer
+
+Testing.
+
+Supertest
+
+kabhi bhi
+
+server.listen()
+
+ko start nahi karega.
+
+Why move proxy into routes?
+
+Answer
+
+Separation of Concerns.
+
+Server ka kaam
+
+Start karna.
+
+Route ka kaam
+
+Proxy karna.
