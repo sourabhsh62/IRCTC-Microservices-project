@@ -52,9 +52,9 @@ const Login = async (data) => {
       throw new Error("Invalid credentials");
     }
 
-  const accessToken=jwt.sign({id:user.id,email:user.email},process.env.JWT_SECRET,{expiresIn:"15m"});
+  const accessToken=jwt.sign({id:user.id,email:user.email,role:user.role},process.env.JWT_SECRET,{expiresIn:"15m"});
 
-    const refreshToken=jwt.sign({id:user.id,email:user.email},process.env.JWT_SECRET,{expiresIn:"7d"});
+    const refreshToken=jwt.sign({id:user.id,email:user.email,role:user.role},process.env.JWT_SECRET,{expiresIn:"7d"});
 
 await pool.query(
   `

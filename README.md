@@ -1390,3 +1390,48 @@ Booking Service
 Protected Routes
 
 - /booking/*
+
+
+
+Client
+
+↓
+
+Gateway
+
+↓
+
+JWT Verify
+
+↓
+
+Role Check
+
+↓
+
+Proxy
+
+↓
+
+Booking Service
+
+
+
+## Authorization
+
+The API Gateway implements Role Based Access Control (RBAC).
+
+Supported Roles
+
+- ADMIN
+- USER
+
+Flow
+
+```text
+JWT Verify
+      ↓
+Role Check
+      ↓
+Proxy
+```

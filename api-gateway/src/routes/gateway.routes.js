@@ -22,6 +22,8 @@ const {
 } = require("../config/constants");
 const authMiddleware =
 require("../middlewares/auth.middleware");
+const authorize =
+require("../middlewares/authorize.middleware");
 
 const limiter = rateLimit({
 
@@ -63,7 +65,13 @@ changeOrigin:true
 
 router.use(
 
-"/booking",authMiddleware,
+"/booking",authMiddleware,authorize(
+
+"USER",
+
+"ADMIN"
+
+),
 
 createProxyMiddleware({
 

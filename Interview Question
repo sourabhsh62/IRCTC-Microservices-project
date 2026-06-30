@@ -8927,3 +8927,20 @@ Why store decoded user in req.user?
 Answer
 
 It allows downstream middleware and services to access authenticated user information without verifying the token again.
+
+🎤 Interview Questions
+Q1
+
+Why implement RBAC in API Gateway?
+
+Answer
+
+RBAC at the Gateway ensures unauthorized requests are rejected before reaching backend services, reducing duplicate authorization logic and improving security.
+
+Q2
+
+Why include role in JWT?
+
+Answer
+
+Embedding the user's role in the JWT allows the Gateway to make authorization decisions without querying the User Service for every request.
