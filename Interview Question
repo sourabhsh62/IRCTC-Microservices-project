@@ -10393,3 +10393,37 @@ Why enable credentials: true?
 Answer
 
 It allows browsers to send cookies and authenticated requests (such as Authorization headers) when communicating with trusted origins.
+
+
+
+Interview Questions
+Q1
+Difference between Morgan and Winston?
+
+Answer
+
+Morgan logs
+
+HTTP Requests
+
+Winston logs
+
+Application Logs
+
+Production me dono saath use hote hain.
+
+Q2
+Why store logs in a file?
+
+Answer
+
+Console logs disappear after restart.
+
+Files can be analyzed later for debugging and monitoring.
+
+Q3
+Why use a custom stream?
+
+Answer
+
+Morgan generates request logs, while Winston manages where and how logs are stored. A custom stream connects the two.

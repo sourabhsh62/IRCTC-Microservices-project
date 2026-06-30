@@ -1457,3 +1457,46 @@ Features
 - Interactive API Documentation
 - OpenAPI 3.0
 - Gateway Endpoint Documentation
+
+
+
+## Security
+
+The API Gateway implements production-ready security.
+
+### Features
+
+- Helmet
+- CORS
+- JWT Authentication
+- Role Based Authorization
+- Redis Rate Limiting
+
+### Allowed Origin
+
+```env
+CLIENT_URL=http://localhost:5173
+```
+
+
+## Logging
+
+The API Gateway uses production-ready logging.
+
+### Stack
+
+- Morgan
+- Winston
+
+### Logged Information
+
+- HTTP Method
+- URL
+- Status Code
+- Response Time
+
+### Log File
+
+```
+logs/gateway.log
+```

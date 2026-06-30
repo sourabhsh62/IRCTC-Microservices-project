@@ -19,6 +19,8 @@ swaggerSpec
 }=require("./docs/swagger");
 
 const gatewayRoutes=require("./routes/gateway.routes");
+const loggerMiddleware =
+require("./middlewares/logger.middleware");
 
 const app=express();
 
@@ -35,7 +37,7 @@ credentials:true
 })
 
 );
-
+app.use(loggerMiddleware);
 app.use(express.json());
 
 app.use(
