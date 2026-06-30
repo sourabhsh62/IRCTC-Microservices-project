@@ -10427,3 +10427,19 @@ Why use a custom stream?
 Answer
 
 Morgan generates request logs, while Winston manages where and how logs are stored. A custom stream connects the two.
+
+
+🎤 Interview Questions
+Q1
+Why mock createProxyMiddleware?
+
+Answer
+
+Because the objective is to verify Gateway routing behavior, not the availability of downstream microservices.
+
+Q2
+Why not call the real User Service?
+
+Answer
+
+Integration tests should isolate the Gateway. Running multiple services makes tests slower and more brittle.
