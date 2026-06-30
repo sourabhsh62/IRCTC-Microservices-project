@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const logger = require("../utils/logger");
 
 const authMiddleware = (req, res, next) => {
 
@@ -42,11 +43,18 @@ const authMiddleware = (req, res, next) => {
 
     } catch (error) {
 
-        return res.status(401).json({
+         logger.error(
 
-            message: "Invalid Token"
+        `JWT Verification Failed : ${error.name} - ${error.message}`
 
-        });
+    );
+
+    return res.status(401).json({
+
+        message: "Invalid Token"
+
+    });
+
 
     }
 

@@ -1,6 +1,12 @@
 const request = require("supertest");
 
 const app = require("../../app");
+const logger = require("../../utils/logger");
+
+jest.mock("../../utils/logger");
+expect(logger.error)
+
+.toHaveBeenCalled();
 
 describe("Gateway Authentication", () => {
 
@@ -53,6 +59,42 @@ expect(response.statusCode)
 expect(response.body.message)
 
 .toBe("Invalid Token");
+
+}
+
+);
+
+test(
+
+"should return 401 when jwt token is invalid",
+
+async()=>{
+
+const response=
+
+await request(app)
+
+.get("/booking")
+
+.set(
+
+"Authorization",
+
+"Bearer invalid_token"
+
+);
+
+expect(response.statusCode)
+
+.toBe(401);
+
+expect(response.body.message)
+
+.toBe("Invalid Token");
+
+expect(logger.error)
+
+.toHaveBeenCalled();
 
 }
 

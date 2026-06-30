@@ -1537,3 +1537,25 @@ Covered Cases
 - ✅ Invalid JWT
 - ✅ Tampered Token
 - ✅ Unauthorized Response
+
+
+
+
+### JWT Error Handling
+
+The Gateway logs authentication failures internally while returning a generic error response to clients.
+
+Example
+
+```
+JWT Verification Failed :
+TokenExpiredError
+```
+
+Client Response
+
+```json
+{
+    "message":"Invalid Token"
+}
+```

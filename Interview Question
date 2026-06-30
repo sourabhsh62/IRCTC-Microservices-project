@@ -10459,3 +10459,20 @@ What does jwt.verify() do?
 Answer
 
 It validates the JWT signature, checks expiration, and decodes the payload if the token is valid.
+
+🎤 Interview Questions
+Q1
+
+Why log JWT errors but return a generic message?
+
+Answer
+
+Returning detailed JWT errors to clients can reveal implementation details and increase security risk. Logging preserves debugging information while exposing only a generic response to clients.
+
+Q2
+
+Why mock the logger?
+
+Answer
+
+We don't want to write real log files during testing. Mocking verifies that logging is triggered without producing side effects.
