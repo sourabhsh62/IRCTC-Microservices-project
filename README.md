@@ -1559,3 +1559,13 @@ Client Response
     "message":"Invalid Token"
 }
 ```
+
+
+## Connected Services
+
+| Route | Service | Port |
+|-------|---------|------|
+| /users | User Service | 3001 |
+| /booking | Booking Service | 3002 |
+| /trains | Train Service | 3003 |
+| /notifications | Notification Service | 3004 |

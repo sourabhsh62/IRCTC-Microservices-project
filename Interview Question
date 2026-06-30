@@ -10476,3 +10476,32 @@ Why mock the logger?
 Answer
 
 We don't want to write real log files during testing. Mocking verifies that logging is triggered without producing side effects.
+
+
+
+🎤 Interview Questions
+Q1
+
+Why expose every service through API Gateway?
+
+Answer
+
+The Gateway becomes the single entry point. Clients never communicate directly with internal microservices, improving security and simplifying client configuration.
+
+Q2
+
+Why protect Train Service with JWT?
+
+Answer
+
+Train search and booking are authenticated operations in this architecture, so requests are validated before reaching the Train Service.
+
+Q3
+
+Why restrict Notification Service to ADMIN?
+
+Answer
+
+Administrative notification operations (manual triggers, retries, monitoring) should not be accessible to regular users.
+
+Note: Agar tumhari Notification Service future me normal users ko apni notifications dekhne ki API bhi degi, to uske liye alag route (/my-notifications) aur alag authorization rules banenge.

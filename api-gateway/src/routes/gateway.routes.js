@@ -27,7 +27,11 @@ const {
 
     USER_SERVICE_URL,
 
-    BOOKING_SERVICE_URL
+    BOOKING_SERVICE_URL,
+
+    TRAIN_SERVICE_URL,
+
+    NOTIFICATION_SERVICE_URL
 
 } = require("../config/constants");
 const authMiddleware =
@@ -72,6 +76,32 @@ changeOrigin:true
 })
 
 );
+
+router.use(
+
+    "/trains",
+
+    authMiddleware,
+
+    authorize(
+
+        "USER",
+
+        "ADMIN"
+
+    ),
+
+    createProxyMiddleware({
+
+        target: TRAIN_SERVICE_URL,
+
+        changeOrigin: true
+
+    })
+
+);
+
+
 /**
  * @swagger
  * /booking:
@@ -100,5 +130,30 @@ changeOrigin:true
 })
 
 );
+
+router.use(
+
+    "/notifications",
+
+    authMiddleware,
+
+    authorize(
+
+        "ADMIN"
+
+    ),
+
+    createProxyMiddleware({
+
+        target: NOTIFICATION_SERVICE_URL,
+
+        changeOrigin: true
+
+    })
+
+);
+
+
+
 
 module.exports=router;

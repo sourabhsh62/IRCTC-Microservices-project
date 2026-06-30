@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(trainRoutes);
 
 app.listen(
-3002,
+3003,
 ()=>{
 console.log(
 "Train Service Running"

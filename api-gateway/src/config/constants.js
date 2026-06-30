@@ -8,6 +8,12 @@ module.exports = {
     BOOKING_SERVICE_URL:
         process.env.BOOKING_SERVICE_URL,
 
+    TRAIN_SERVICE_URL:
+        process.env.TRAIN_SERVICE_URL,
+
+    NOTIFICATION_SERVICE_URL:
+        process.env.NOTIFICATION_SERVICE_URL,
+
     CLIENT_URL:
         process.env.CLIENT_URL
 
