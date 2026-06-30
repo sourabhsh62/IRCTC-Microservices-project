@@ -1,3 +1,13 @@
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: User Service Proxy
+ *     responses:
+ *       200:
+ *         description: Request forwarded to User Service
+ */
+
 const express = require("express");
 
 const router = express.Router();
@@ -62,7 +72,15 @@ changeOrigin:true
 })
 
 );
-
+/**
+ * @swagger
+ * /booking:
+ *   get:
+ *     summary: Booking Service Proxy
+ *     responses:
+ *       200:
+ *         description: Request forwarded to Booking Service
+ */
 router.use(
 
 "/booking",authMiddleware,authorize(
