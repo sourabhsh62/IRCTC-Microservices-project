@@ -2,6 +2,7 @@ const request = require("supertest");
 
 const app = require("../../app");
 const logger = require("../../utils/logger");
+const jwt = require("jsonwebtoken");
 
 jest.mock("../../utils/logger");
 expect(logger.error)

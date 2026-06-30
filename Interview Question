@@ -10505,3 +10505,21 @@ Answer
 Administrative notification operations (manual triggers, retries, monitoring) should not be accessible to regular users.
 
 Note: Agar tumhari Notification Service future me normal users ko apni notifications dekhne ki API bhi degi, to uske liye alag route (/my-notifications) aur alag authorization rules banenge.
+
+
+🎤 Interview Questions
+Q1
+
+Why mock jwt.verify instead of creating a real JWT?
+
+Answer
+
+Unit and integration tests should isolate the middleware behavior. Mocking avoids dependency on cryptographic signing and keeps tests deterministic.
+
+Q2
+
+Why include role in the mocked payload?
+
+Answer
+
+Because the authorization middleware depends on req.user.role to decide whether the request should proceed.
