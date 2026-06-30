@@ -3,10 +3,14 @@ require("dotenv").config();
 const app = require("./src/app");
 
 const http = require("http");
+const {
+
+    PORT
+
+} = require("./src/config/constants");
 
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 3000;
 
 server.listen(PORT,()=>{
 

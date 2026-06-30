@@ -13,6 +13,13 @@ const {
 createProxyMiddleware
 
 } = require("http-proxy-middleware");
+const {
+
+    USER_SERVICE_URL,
+
+    BOOKING_SERVICE_URL
+
+} = require("../config/constants");
 
 const limiter = rateLimit({
 
@@ -44,7 +51,7 @@ router.use(
 
 createProxyMiddleware({
 
-target:"http://localhost:3001",
+target:USER_SERVICE_URL,
 
 changeOrigin:true
 
@@ -58,7 +65,7 @@ router.use(
 
 createProxyMiddleware({
 
-target:"http://localhost:3002",
+target:BOOKING_SERVICE_URL,
 
 changeOrigin:true
 

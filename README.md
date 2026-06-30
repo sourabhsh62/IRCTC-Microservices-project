@@ -1348,3 +1348,24 @@ Microservices
 - Proxy Middleware
 - Redis Rate Limiting
 - Production Ready Folder Structure
+
+
+
+## Configuration
+
+Environment variables are used for all external services.
+
+Variables
+
+```env
+PORT=3000
+USER_SERVICE_URL=http://localhost:3001
+BOOKING_SERVICE_URL=http://localhost:3002
+```
+
+Benefits
+
+- No Hardcoded URLs
+- Easy Deployment
+- Docker Friendly
+- Kubernetes Friendly

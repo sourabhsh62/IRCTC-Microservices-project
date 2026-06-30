@@ -8890,3 +8890,22 @@ Start karna.
 Route ka kaam
 
 Proxy karna.
+
+
+
+
+
+🎤 Interview Questions
+Q1
+Why should URLs not be hardcoded?
+
+Answer
+
+Hardcoded URLs make deployment difficult. Environment variables allow the same codebase to run in development, staging, and production by changing configuration instead of source code.
+
+Q2
+Why create a constants.js file?
+
+Answer
+
+It centralizes application configuration, avoids repeated process.env usage throughout the project, and provides a single place to manage runtime settings.
