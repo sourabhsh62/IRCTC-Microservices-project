@@ -10443,3 +10443,19 @@ Why not call the real User Service?
 Answer
 
 Integration tests should isolate the Gateway. Running multiple services makes tests slower and more brittle.
+
+
+🎤 Interview Questions
+Q1
+Why test invalid JWT separately from missing JWT?
+
+Answer
+
+A missing JWT indicates no authentication attempt, while an invalid JWT indicates an authentication attempt with an incorrect or tampered token. Both scenarios should be handled differently but return appropriate authentication errors.
+
+Q2
+What does jwt.verify() do?
+
+Answer
+
+It validates the JWT signature, checks expiration, and decodes the payload if the token is valid.

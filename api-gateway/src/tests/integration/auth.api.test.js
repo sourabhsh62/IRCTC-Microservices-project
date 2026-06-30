@@ -26,4 +26,36 @@ describe("Gateway Authentication", () => {
 
     );
 
+    test(
+
+"should return 401 when jwt token is invalid",
+
+async()=>{
+
+const response=
+
+await request(app)
+
+.get("/booking")
+
+.set(
+
+"Authorization",
+
+"Bearer invalid_token"
+
+);
+
+expect(response.statusCode)
+
+.toBe(401);
+
+expect(response.body.message)
+
+.toBe("Invalid Token");
+
+}
+
+);
+
 });

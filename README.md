@@ -1529,3 +1529,11 @@ Covered Cases
 
 - ✅ Missing Authorization Header
 - ✅ Unauthorized Request
+
+### Invalid JWT Tests
+
+Covered Cases
+
+- ✅ Invalid JWT
+- ✅ Tampered Token
+- ✅ Unauthorized Response
